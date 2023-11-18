@@ -1,0 +1,47 @@
+#!/bin/bash
+
+while getopts ":apfnh" opt; do # A: all, P: apt, F: flatpak, N: nix, H: help
+  case $opt in
+    a)
+      if [[ "$1" == *a* ]]; then
+        sudo nala update && sudo nala upgrade && flatpak update && nix-env -u
+      fi
+      ;;
+
+    p)
+      if [[ "$1" == *p* ]]; then
+        sudo nala update && sudo nala upgrade
+      fi
+      ;;
+    f)
+      if [[ "$1" == *f* ]]; then
+        flatpak update
+      fi
+      ;;
+    n)
+      if [[ "$1" == *n* ]]; then
+        nix-env -u
+      fi
+      ;;
+    h)
+      if [[ "$1" == *h* ]]; then
+        echo "simup (Simple Update) is a shell script focused on making updating your system less painful" 
+        echo -e "\n-h : Show this message"
+        echo "-a : Update All"
+        echo "-p : Update APT"
+        echo "-f : Update Flatpak"
+        echo "-n : Update NIX"
+      fi
+      ;;
+
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+

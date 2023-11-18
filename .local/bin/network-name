@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Get the current Wi-Fi network name
+wifi_name=$(nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d: -f2)
+
+# Send a notification with the Wi-Fi network name
+notify-send "Connected to Wi-Fi" "Network: $wifi_name" -i wifi
+

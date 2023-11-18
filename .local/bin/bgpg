@@ -1,0 +1,98 @@
+#!/bin/bash
+
+# Function to display usage instructions
+usage() {
+    echo "Usage: bgpg [-x|-e] [-f|-d] [-r] file_or_dir"
+    echo "-x: Decryption mode"
+    echo "-e: Encryption mode"
+    echo "-f: Input is a file"
+    echo "-d: Input is a directory"
+    echo "-r: Remove the original file/directory after encryption/decryption"
+    exit 1
+}
+
+# Check for the correct number of arguments
+if [ "$#" -lt 3 ]; then
+    usage
+fi
+
+# Initialize variables
+mode=""
+input=""
+is_file=false
+is_dir=false
+remove_original=false
+
+# Parse command-line options
+while getopts "xefr" opt; do
+    case $opt in
+        x)
+            mode="decrypt"
+            ;;
+        e)
+            mode="encrypt"
+            ;;
+        f)
+            is_file=true
+            ;;
+        w)
+            is_dir=true
+            ;;
+        r)
+            remove_original=true
+            ;;
+        \?)
+            usage
+            ;;
+    esac
+done
+
+# Shift the parsed options out of the argument list
+shift $((OPTIND-1))
+
+# Validate the mode and input type
+if [ "$mode" != "encrypt" ] && [ "$mode" != "decrypt" ]; then
+    echo "Invalid mode. Please use -x for decryption or -e for encryption."
+    usage
+fi
+
+if [ "$is_file" == true ] && [ "$is_dir" == true ]; then
+    echo "Specify either -f (file) or -d (directory), but not both."
+    usage
+fi
+
+# Determine the operation to be performed
+if [ "$mode" == "encrypt" ]; then
+    # Encryption mode
+    if [ "$is_file" == true ]; then
+        # Encrypt a file
+        gpg -c --no-symkey-cache --cipher-algo AES256 "$1"
+        if [ "$remove_original" == true ]; then
+            rm "$1"
+        fi
+    elif [ "$is_dir" == true ]; then
+        # Encrypt a directory by compressing it first
+        zip -r "${1}.zip" "$1"
+        gpg -c --no-symkey-cache --cipher-algo AES256 "${1}.zip"
+        if [ "$remove_original" == true ]; then
+            rm -r "$1" "${1}.zip"
+        else
+            rm "${1}.zip"
+        fi
+    else
+        echo "Specify whether the input is a file (-f) or a directory (-d)."
+        usage
+    fi
+else
+    # Decryption mode
+    if [ "$is_file" == true ]; then
+        # Decrypt a file
+        gpg -d "$1"
+    elif [ "$is_dir" == true ]; then
+        # Decrypt a directory
+        gpg -d "${1}.gpg"
+    else
+        echo "Specify whether the input is a file (-f) or a directory (-d)."
+        usage
+    fi
+fi

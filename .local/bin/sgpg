@@ -1,0 +1,84 @@
+#!/bin/bash
+
+echo "sgpg [YOUR FILE/DIR] [-e/-x] [-f/-d]"
+echo " "
+echo  "┏━━━━━━━┳━━━━━━━━━━━━━━━┓"
+echo  "┃Command┃Function       ┃"
+echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+echo  "┃-e     ┃Encryption mode┃"
+echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+echo  "┃-x     ┃Decryption mode┃"
+echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+echo  "┃-f     ┃Is a file      ┃"
+echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+echo  "┃-d     ┃Is a directory ┃"
+echo  "┗━━━━━━━┻━━━━━━━━━━━━━━━┛"
+echo " "
+
+
+# Check if there is at least one argument
+if [ $# -lt 1 ]; then
+  	echo "sgpg [YOUR FILE/DIR] [-e/-x] [-f/-d]"
+	echo " "
+  	echo  "┏━━━━━━━┳━━━━━━━━━━━━━━━┓"
+	echo  "┃Command┃Function       ┃"
+	echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+	echo  "┃-e     ┃Encryption mode┃"
+	echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+	echo  "┃-x     ┃Decryption mode┃"
+	echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+	echo  "┃-f     ┃Is a file      ┃"
+	echo  "┣━━━━━━━╋━━━━━━━━━━━━━━━┫"
+	echo  "┃-d     ┃Is a directory ┃"
+	echo  "┗━━━━━━━┻━━━━━━━━━━━━━━━┛"
+	echo " "
+
+help
+  exit 1
+fi
+
+path="$1"
+mode="$2"
+
+if [[ $mode = "-e" ]]; then
+  # Check if it's a file
+  if [ -f "$path" ]; then
+    echo "file"
+    gpg -c --no-symkey-cache --cipher-algo AES256 "$path"
+    rm -f "$path"
+    echo "Done"
+
+  # Check if it's a directory
+  elif [ -d "$path" ]; then
+    echo "directory"
+    zip -r "${path}.zip" "$path"
+    gpg -c --no-symkey-cache --cipher-algo AES256 "${path}.zip"
+    rm -rf "$path" && rm -f "${path}.zip"
+
+  else
+    echo "unknown"
+  fi
+
+elif [[ $mode = "-x" ]]; then
+  if [[ $3 = "-f" ]]; then
+    printf "\nFile Mode: Decrypting $path using GPG.\n"
+    gpg "$path" &&
+    printf "\nRemoving the encrypted .gpg file...\n"
+    rm -f "$path" &&
+    printf "\nDone"
+  elif [[ $3 = "-d" ]]; then
+    printf "\nDir Mode: Decrypting $path using GPG.\n"
+    gpg "$path" &&
+    printf "\nExtracting $path without .gpg extension...\n"
+    zipfile="${path%.gpg}" &&
+    unzip "$zipfile" &&
+    printf "\nRemoving $zipfile & $path\n"
+    rm -f "$zipfile" && rm -f "$path" &&
+    echo -e "DONE"
+  else
+    echo "ERROR: choose a mode [-f/-d]"
+  fi
+else
+	echo "ooops"
+fi
+

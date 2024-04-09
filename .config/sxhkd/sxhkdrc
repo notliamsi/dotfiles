@@ -1,34 +1,39 @@
-#  ██████  █████  ████████ ██   ██ ██   ██ 
-# ██      ██   ██    ██    ██   ██ ██  ██  
-# ██      ███████    ██    ███████ █████   
-# ██      ██   ██    ██    ██   ██ ██  ██  
-#  ██████ ██   ██    ██    ██   ██ ██   ██ By l1amsi
-#
-#   : https://github.com/itsl1amsi
-
 #========== Programs ==========
 
 # terminal emulator
 super + Return
   alacritty	
 
-super + shift + o ; {b,f,n,x,t,v,k}
-  {thorium-browser, \
-  thunar, \
-  nitrogen, \
-  keepassxc, \
-  tor-browser, \
-  virt-manager, \
-  onboard}
-
 # program launcher
 super + d
   rofi -show drun	
 
+# Super + shift + o to open programs
+super + shift + o ; {w,f,x,v,k,c,t,b}
+  {floorp, \
+  thunar, \
+  keepassxc, \
+  virt-manager, \
+  onboard, \
+  flatpak run org.gnome.Calculator, \
+  flatpak run app.drey.Dialect, \
+  flatpak run com.calibre_ebook.calibre
+  }
+
+
+super + w
+  rofi -show window # put it in the window section
+
 super + y
   ~/.local/bin/ytb-mpv
 
-#==========
+super + s
+  flameshot gui
+
+super + e
+  $HOME/.local/bin/demoji
+
+#========== End Programs ========== 
 
 
 #========== Audio ==========
@@ -36,8 +41,23 @@ super + y
 super + ctrl + {k,j,m}
   $HOME/.local/bin/chvol {up,down,mute}
 
+{XF86AudioRaiseVolume, XF86AudioLowerVolume, XF86AudioMute}
+  $HOME/.local/bin/chvol {up,down,mute}
+
 super + ctrl + {h,space,l}
   playerctl {previous,play-pause,next}
+
+#
+
+#========== Configuration and Settings =========
+
+super + k
+  $HOME/.local/bin/chkbl
+
+#========== Power ========== 
+
+super + p
+  systemctl suspend
 
 #========== BSPWM ========== 
 
@@ -93,7 +113,7 @@ super + {_,shift} + Tab
 	bspc desktop -f {next,prev}.local
 
 # focus the last node/desktop
-super + {grave,Tab}
+super + {n,quotedbl}
 	bspc {node,desktop} -f last
 
 # focus the older or newer node in the focus history

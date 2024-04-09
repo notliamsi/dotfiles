@@ -1,17 +1,5 @@
 #!/bin/sh
 
-#
-#   ██████  █████  ████████ ██     ██ ███    ███ 
-#  ██      ██   ██    ██    ██     ██ ████  ████ 
-#  ██      ███████    ██    ██  █  ██ ██ ████ ██ 
-#  ██      ██   ██    ██    ██ ███ ██ ██  ██  ██ 
-#   ██████ ██   ██    ██     ███ ███  ██      ██ By l1amsi
-#
-#    : https://github.com/itsl1amsi
-#                                                
-
-bspc rule -r "*"
-
 # Autostart
 $HOME/.config/bspwm/autostart.sh
 
@@ -62,8 +50,18 @@ bspc config pointer_follows_focus true # the cursor follow the focused window
 bspc rule -a Nitrogen state=floating
 bspc rule -a Munadi state=floating
 bspc rule -a Zathura state=tiled
-bspc rule -a mpv desktop='^5' state=fullscreen follow=on
-bspc rule -a Keepassxc desktop='^7' state=fullscreen 
-bspc rule -a discord desktop='^4' state=fullscreen follow=on
+bspc rule -a mpv desktop='IV' state=fullscreen follow=on
+bspc rule -a Keepassxc desktop='VII' state=fullscreen 
+bspc rule -a discord desktop='III' state=fullscreen follow=on
 bspc rule -a gnome-calculator state=floating 
 bspc rule -a Onboard state=floating 
+bspc rule -a Com.gitlab.bitseater.meteo state=floating
+bspc rule -a MEGAsync state=floating
+bspc rule -a amberol state=floating
+bspc rule -a timer.py state=floating
+bspc rule -a io.gitlab.idevecore.Pomodoro state=floating
+bspc rule -a *:*:float99 state=floating
+bspc rule -a float99 state=floating
+bspc rule -a dialect state=floating
+bspc rule -a calibre desktop='VI' follow=on
+bspc rule -a Zathura desktop='IV' follow=on

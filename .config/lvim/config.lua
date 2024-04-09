@@ -4,6 +4,7 @@
 -- Discord: https://discord.com/invite/Xb9B4Ny
 
 
+-- Change Theme to catppuccin mocha
 lvim.plugins = {
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
@@ -15,4 +16,13 @@ lvim.plugins = {
 },
 
 }
+lvim.colorscheme = "catppuccin-mocha"
+
+-- Map "<leader> + g" to jump to a line number
+lvim.keys.normal_mode["<Leader>g"] = [[:lua GoToLine()<CR>]]
+
+function GoToLine()
+    local lnum = vim.fn.input(": ")
+    vim.cmd("normal " .. lnum .. "G")
+end
 

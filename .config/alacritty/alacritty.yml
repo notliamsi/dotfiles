@@ -14,27 +14,27 @@ scrolling:
 font:
   normal:
     family: JetBrainsMono Nerd Font
-    style:  Regular
+    style:  Medium
   bold:
     family: JetBrainsMono Nerd Font
     style:  Bold
   italic:
     family: JetBrainsMono Nerd Font
-    style:  Italic
+    style:  Medium Italic
   bold_italic:
     family: JetBrainsMono Nerd Font
     style: Bold Italic
-  size: 10 
+  size: 11 
 draw_bold_text_with_bright_colors: true
 
 import:
   - ~/.config/alacritty/catppuccin-mocha.yml
 
 selection:
-  save_to_clipboard: false
+    save_to_clipboard: false
 
 shell:
-  program: /usr/bin/zsh
+  program: /usr/bin/zsh 
 
 key_bindings:
   - { key: Return, mods: Super|Shift, action: SpawnNewInstance }

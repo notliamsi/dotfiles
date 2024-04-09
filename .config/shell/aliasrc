@@ -1,0 +1,63 @@
+#!/bin/sh
+
+# Modern Unix
+[ -x "$(command -v $HOME/.loca/bin/lvim)" ] && alias vim="lvim" vimdiff="lvim -d"
+
+[ -x "$(command -v rofi)" ] && alias dmenu="rofi -dmenu"
+
+[ -x "$(command -v nala)" ] && alias apt="nala" apt-get="nala"
+
+[ -x "$(command -v batcat)" ] && alias cat="batcat --theme='Catppuccin-mocha'" bat="batcat"
+
+[ -x "$(command -v exa)" ] && alias ls="exa -a --group-directories-first --icons"
+ 
+[ -x "$(command -v rg)" ] && alias grep="rg"
+
+[ -x "$(command -v fdfind)" ] && alias find="fdfind" fd="fdfind"
+
+[ -x "$(command -v z)" ] && alias cd="z"
+
+# Use $XINITRC variable if file exists.
+[ -f "$XINITRC" ] && alias startx="startx $XINITRC"
+
+[ -f "$MBSYNCRC" ] && alias mbsync="mbsync -c $MBSYNCRC"
+
+# sudo not required for some system commands
+for command in mount umount sv nala updatedb su shutdown poweroff reboot ; do
+	alias $command="sudo $command"
+done; unset command
+
+se() {
+	choice="$(find ~/.local/bin -mindepth 1 -printf '%P\n' | fzf)"
+	[ -f "$HOME/.local/bin/$choice" ] && $EDITOR "$HOME/.local/bin/$choice"
+	;}
+
+alias \
+  ..="cd .." \
+  chx="chmod +x" \
+  g="git"\
+  gc="git clone" \
+  dot="/usr/bin/git --git-dir=$HOME/Github/dotfiles/ --work-tree=$HOME" \
+	cp="cp -iv" \
+	mv="mv -iv" \
+	rm="rm -vrI" \
+	bc="bc -ql" \
+	mkd="mkdir -pv" \
+	ytd="yt-dlp --embed-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ytt="yt --skip-download --write-thumbnail" \
+	ffmpeg="ffmpeg -hide_banner" \
+  nf="neofetch" \
+  lv="$EDITOR" \
+  n="$EDITOR" \
+  lf="lfub" \
+  diff="diff --color=auto" \
+	ccat="highlight --out-format=ansi" \
+	ip="ip -color=auto" \
+  rfh='tac $HISTFILE | fzf | zsh'\
+  cfh='tac $HISTFILE | fzf | xclip -selection clipboard'\
+  clip='xclip -selection clipboard'\
+  fzfhistory='tac $HISTFILE | fzf | xclip -selection clipboard && xdotool key ctrl+shift+v'\
+  tarx='tar -xfv'\
+  cgpt='echo -n "> "; read prompt && tgpt -q "$prompt . And I want you to give it to me in markdown well structed, so use bold, italic, quotes, headers, etc." | glow && zsh'\
+  cal='echo "$1" | bc'

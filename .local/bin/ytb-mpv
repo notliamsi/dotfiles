@@ -10,7 +10,7 @@ mpv "$video_url" &
 video_title=$(yt-dlp --get-title "$video_url")
 
 # Define the directory where you want to download the thumbnail
-download_dir="/home/liamsi/Downloads/temp"
+download_dir="/tmp"
 
 # Download the thumbnail to the specified directory
 yt-dlp --skip-download --write-thumbnail -o "$download_dir/%(title)s.%(ext)s" "$video_url"
@@ -19,6 +19,4 @@ yt-dlp --skip-download --write-thumbnail -o "$download_dir/%(title)s.%(ext)s" "$
 thumbnail_file="$download_dir/${video_title}.webp"
 
 # Send a notification with the video title and the local thumbnail file
-notify-send "Now Playing: $video_title" -i "$thumbnail_file"
-sleep 1
-rm -f $thumbnail_file
+notify-send -t 3000 "Now Playing: $video_title" -i "$thumbnail_file"

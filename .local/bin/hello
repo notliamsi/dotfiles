@@ -1,0 +1,7 @@
+#!/bin/sh
+
+printf " ∧,,,∧
+( ̳•·• ̳)
+/    づ\e[0m\e[31m \e[0m Meowllo $USER
+
+"
